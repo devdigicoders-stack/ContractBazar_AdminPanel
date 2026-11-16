@@ -214,7 +214,13 @@ export default function Categories() {
           <label style="font-weight: bold; display: block; margin-bottom: 4px;">${t('lblCatImage')}</label>
           <input id="swal-edit-file" type="file" accept="image/*" class="swal2-file" style="margin: 0 0 8px 0; width: 100%;">
           <div id="swal-edit-img-preview" style="display: ${initialPreviewUrl ? 'flex' : 'none'}; align-items: center; gap: 8px; margin-top: 6px;">
-            <img id="swal-edit-img-elem" src="${initialPreviewUrl}" alt="category pic" style="width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;" />
+            <img 
+              id="swal-edit-img-elem" 
+              src="${initialPreviewUrl}" 
+              alt="category pic" 
+              style="width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;" 
+              onerror="this.onerror=null; this.style.display='none'; if(document.getElementById('swal-edit-img-status')){document.getElementById('swal-edit-img-status').textContent='${isEnglish ? 'No valid image found. Choose new file to upload.' : 'पुरानी तस्वीर नहीं मिली, नई तस्वीर चुनें'}'; document.getElementById('swal-edit-img-status').style.color='#ea580c';}"
+            />
             <span id="swal-edit-img-status" style="font-size: 11px; color: #16a34a; font-weight: bold;">${initialPreviewUrl ? (isEnglish ? 'Current Picture ✓' : 'वर्तमान तस्वीर ✓') : ''}</span>
           </div>
         </div>
