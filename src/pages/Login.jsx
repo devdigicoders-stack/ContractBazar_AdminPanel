@@ -164,9 +164,7 @@ export default function Login() {
         </div>
 
         {/* Help Note for Admin CLI */}
-        <div className="text-center mt-6 text-xs text-slate-500">
-          <p>{t('loginCliHelp')} <code className="text-slate-400 bg-slate-800 px-2 py-0.5 rounded font-mono">node backend/src/scripts/createAdmin.js</code></p>
-        </div>
+        
       </div>
     </div>
   );

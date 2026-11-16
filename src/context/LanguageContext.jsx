@@ -58,7 +58,7 @@ export const translations = {
     loginSuccess: 'Login successful!',
     loginFailError: 'Login failed! Please check your credentials.',
     loginSecureNotice: 'Secure Multi-Factor Protected Super Admin Portal',
-    loginCliHelp: 'Forgot credentials? Run CLI in backend:',
+    loginCliHelp: ':',
 
     // Dashboard
     liveMonitoring: 'Live Monitoring',
