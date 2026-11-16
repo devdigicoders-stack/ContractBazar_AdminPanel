@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Helper to make authenticated requests
 export async function apiRequest(endpoint, options = {}) {
@@ -120,6 +120,29 @@ export const adminPanelApi = {
     return await apiRequest(`/admin/panel/drivers/${id}`, {
       method: 'DELETE',
     });
+  },
+
+  // File Upload Helper for Admin
+  uploadFile: async (file, category = 'categories', appType = 'admin') => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('category', category);
+    formData.append('appType', appType);
+
+    const token = localStorage.getItem('admin_token');
+    const response = await fetch(`${API_BASE_URL}/upload/single`, {
+      method: 'POST',
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: formData,
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.message || 'File upload failed');
+    }
+    return data;
   },
 
   // Categories
