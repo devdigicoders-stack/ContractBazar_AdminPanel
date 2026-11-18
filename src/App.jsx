@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ChakraProvider, Spinner, Center } from '@chakra-ui/react';
+import { ChakraProvider, Skeleton, Stack } from '@chakra-ui/react';
 import { Toaster } from 'react-hot-toast';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -18,13 +18,45 @@ import { LanguageProvider } from './context/LanguageContext';
 
 // Protected Route Guard
 function ProtectedLayout({ children }) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, token } = useAuth();
+
+  // If initial auth verification is running but user already has a saved token/session,
+  // keep the Layout visible and only show Skeleton inside the content area
+  if (isLoading && token) {
+    return (
+      <Layout>
+        <div className="space-y-6">
+          <Skeleton height="35px" width="220px" rounded="xl" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Skeleton height="110px" rounded="2xl" />
+            <Skeleton height="110px" rounded="2xl" />
+            <Skeleton height="110px" rounded="2xl" />
+            <Skeleton height="110px" rounded="2xl" />
+          </div>
+          <div className="bg-white rounded-3xl p-6 border border-slate-200">
+            <Stack spacing={4}>
+              <Skeleton height="35px" rounded="lg" />
+              <Skeleton height="35px" rounded="lg" />
+              <Skeleton height="35px" rounded="lg" />
+              <Skeleton height="35px" rounded="lg" />
+            </Stack>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (isLoading) {
     return (
-      <Center h="100vh" bg="#0F172A">
-        <Spinner size="xl" color="#E65100" thickness="4px" />
-      </Center>
+      <Layout>
+        <div className="p-8">
+          <Stack spacing={4}>
+            <Skeleton height="40px" width="300px" rounded="xl" />
+            <Skeleton height="120px" rounded="2xl" />
+            <Skeleton height="200px" rounded="2xl" />
+          </Stack>
+        </div>
+      </Layout>
     );
   }
 
