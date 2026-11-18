@@ -1,5 +1,22 @@
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'https://contractbazar-backend.onrender.com/api';
+
+// Base Origin for Media / Uploads (strips trailing /api if present)
+export const FILE_BASE_URL = API_BASE_URL.replace(/\/api\/?$/, '');
+
+// Helper to format media/document URLs safely
+export function getMediaUrl(path) {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    // If it was stored with localhost:5000, replace with live production backend URL
+    if (path.includes('localhost:5000')) {
+      return path.replace('http://localhost:5000', FILE_BASE_URL);
+    }
+    return path;
+  }
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${FILE_BASE_URL}${cleanPath}`;
+}
 
 // Helper to make authenticated requests
 export async function apiRequest(endpoint, options = {}) {

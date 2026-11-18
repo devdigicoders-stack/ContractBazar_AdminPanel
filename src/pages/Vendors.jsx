@@ -32,7 +32,7 @@ import {
 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
-import { adminPanelApi } from '../services/api';
+import { adminPanelApi, getMediaUrl } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Vendors() {
@@ -684,7 +684,7 @@ export default function Vendors() {
                     <span className="text-[10px] font-bold text-slate-600 block mb-1">Aadhaar Front</span>
                     {selectedVendor.aadhaarFrontImg ? (
                       <a
-                        href={`http://localhost:5000${selectedVendor.aadhaarFrontImg}`}
+                        href={getMediaUrl(selectedVendor.aadhaarFrontImg)}
                         target="_blank"
                         rel="noreferrer"
                         className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1"
@@ -701,7 +701,7 @@ export default function Vendors() {
                     <span className="text-[10px] font-bold text-slate-600 block mb-1">Aadhaar Back</span>
                     {selectedVendor.aadhaarBackImg ? (
                       <a
-                        href={`http://localhost:5000${selectedVendor.aadhaarBackImg}`}
+                        href={getMediaUrl(selectedVendor.aadhaarBackImg)}
                         target="_blank"
                         rel="noreferrer"
                         className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1"
@@ -718,7 +718,7 @@ export default function Vendors() {
                     <span className="text-[10px] font-bold text-slate-600 block mb-1">PAN Card</span>
                     {selectedVendor.panCardImg ? (
                       <a
-                        href={`http://localhost:5000${selectedVendor.panCardImg}`}
+                        href={getMediaUrl(selectedVendor.panCardImg)}
                         target="_blank"
                         rel="noreferrer"
                         className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1"
@@ -735,7 +735,7 @@ export default function Vendors() {
                     <span className="text-[10px] font-bold text-slate-600 block mb-1">Shop / Bhattha Proof</span>
                     {selectedVendor.shopProofDoc ? (
                       <a
-                        href={`http://localhost:5000${selectedVendor.shopProofDoc}`}
+                        href={getMediaUrl(selectedVendor.shopProofDoc)}
                         target="_blank"
                         rel="noreferrer"
                         className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1"
@@ -756,7 +756,7 @@ export default function Vendors() {
                       {selectedVendor.businessPhotos.map((imgUrl, i) => (
                         <a
                           key={i}
-                          href={`http://localhost:5000${imgUrl}`}
+                          href={getMediaUrl(imgUrl)}
                           target="_blank"
                           rel="noreferrer"
                           className="px-2.5 py-1 bg-white border border-slate-200 text-xs text-primary font-semibold rounded-lg hover:bg-orange-50 flex items-center gap-1 shadow-sm"

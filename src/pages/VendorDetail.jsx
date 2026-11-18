@@ -44,7 +44,7 @@ import {
 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
-import { adminPanelApi } from '../services/api';
+import { adminPanelApi, getMediaUrl } from '../services/api';
 
 export default function VendorDetail() {
   const { id } = useParams();
@@ -693,12 +693,12 @@ export default function VendorDetail() {
                       <Box bg="white" p={2} borderRadius="8px" textAlign="center" border="1px solid #CBD5E1">
                         <Flex justify="space-between" align="center" mb={1}>
                           <Text fontSize="11px" fontWeight="700">Aadhaar Front</Text>
-                          <a href={`http://localhost:5000${vendor.aadhaarFrontImg}`} target="_blank" rel="noreferrer">
+                          <a href={getMediaUrl(vendor.aadhaarFrontImg)} target="_blank" rel="noreferrer">
                             <FiExternalLink size={12} color="#2563EB" />
                           </a>
                         </Flex>
                         <Image
-                          src={`http://localhost:5000${vendor.aadhaarFrontImg}`}
+                          src={getMediaUrl(vendor.aadhaarFrontImg)}
                           fallbackSrc="https://placehold.co/150x90?text=Aadhaar"
                           h="120px"
                           w="100%"
@@ -712,12 +712,12 @@ export default function VendorDetail() {
                       <Box bg="white" p={2} borderRadius="8px" textAlign="center" border="1px solid #CBD5E1">
                         <Flex justify="space-between" align="center" mb={1}>
                           <Text fontSize="11px" fontWeight="700">Aadhaar Back</Text>
-                          <a href={`http://localhost:5000${vendor.aadhaarBackImg}`} target="_blank" rel="noreferrer">
+                          <a href={getMediaUrl(vendor.aadhaarBackImg)} target="_blank" rel="noreferrer">
                             <FiExternalLink size={12} color="#2563EB" />
                           </a>
                         </Flex>
                         <Image
-                          src={`http://localhost:5000${vendor.aadhaarBackImg}`}
+                          src={getMediaUrl(vendor.aadhaarBackImg)}
                           fallbackSrc="https://placehold.co/150x90?text=Aadhaar+Back"
                           h="120px"
                           w="100%"
@@ -731,12 +731,12 @@ export default function VendorDetail() {
                       <Box bg="white" p={2} borderRadius="8px" textAlign="center" border="1px solid #CBD5E1">
                         <Flex justify="space-between" align="center" mb={1}>
                           <Text fontSize="11px" fontWeight="700">PAN Card</Text>
-                          <a href={`http://localhost:5000${vendor.panCardImg}`} target="_blank" rel="noreferrer">
+                          <a href={getMediaUrl(vendor.panCardImg)} target="_blank" rel="noreferrer">
                             <FiExternalLink size={12} color="#2563EB" />
                           </a>
                         </Flex>
                         <Image
-                          src={`http://localhost:5000${vendor.panCardImg}`}
+                          src={getMediaUrl(vendor.panCardImg)}
                           fallbackSrc="https://placehold.co/150x90?text=PAN+Card"
                           h="120px"
                           w="100%"
@@ -750,12 +750,12 @@ export default function VendorDetail() {
                       <Box bg="white" p={2} borderRadius="8px" textAlign="center" border="1px solid #CBD5E1">
                         <Flex justify="space-between" align="center" mb={1}>
                           <Text fontSize="11px" fontWeight="700">Shop / Bhattha Proof</Text>
-                          <a href={`http://localhost:5000${vendor.shopProofDoc}`} target="_blank" rel="noreferrer">
+                          <a href={getMediaUrl(vendor.shopProofDoc)} target="_blank" rel="noreferrer">
                             <FiExternalLink size={12} color="#2563EB" />
                           </a>
                         </Flex>
                         <Image
-                          src={`http://localhost:5000${vendor.shopProofDoc}`}
+                          src={getMediaUrl(vendor.shopProofDoc)}
                           fallbackSrc="https://placehold.co/150x90?text=Shop+Doc"
                           h="120px"
                           w="100%"
