@@ -360,10 +360,10 @@ export default function Categories() {
           </button>
           <button
             onClick={handleAddCategory}
-            className="bg-primary hover:bg-orange-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg shadow-primary/20 flex items-center gap-2 transition-all"
+            className="bg-primary hover:bg-orange-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg shadow-primary/20 flex items-center gap-2 whitespace-nowrap transition-all"
           >
-            <FiPlus size={16} />
-            <span>{t('addCategoryBtn')}</span>
+            <FiPlus size={16} className="shrink-0" />
+            <span className="whitespace-nowrap">{t('addCategoryBtn')}</span>
           </button>
         </div>
       </div>
