@@ -111,11 +111,7 @@ export default function Commissions() {
     series: [{
       name: isEnglish ? 'Commission' : 'कमीशन',
       colorByPoint: true,
-      data: pieChartSeries.length > 0 ? pieChartSeries : [
-        { name: isEnglish ? 'Bricks' : 'ईंट', y: 1 },
-        { name: isEnglish ? 'Cement' : 'सीमेंट', y: 1 },
-        { name: isEnglish ? 'Sand/Morang' : 'बालू/मौरंग', y: 1 }
-      ]
+      data: pieChartSeries
     }]
   };
 
@@ -259,7 +255,25 @@ export default function Commissions() {
               <FiPieChart className="text-slate-400" size={18} />
             </div>
             <p className="text-xs text-slate-500 mb-4">{t('chartCategorySub')}</p>
-            <HighchartsReact highcharts={Highcharts} options={categoryChartOptions} />
+            {loading ? (
+              <Stack spacing={3} py={8}>
+                <Skeleton height="40px" />
+                <Skeleton height="120px" rounded="full" />
+                <Skeleton height="40px" />
+              </Stack>
+            ) : pieChartSeries.length === 0 ? (
+              <div className="text-center py-12 text-slate-400">
+                <FiPieChart size={38} className="mx-auto mb-2 opacity-40 text-primary" />
+                <p className="text-xs font-bold text-slate-700">
+                  {isEnglish ? 'No Category Earnings Yet' : 'कोई कैटेगरी कमाई उपलब्ध नहीं'}
+                </p>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  {isEnglish ? 'Earnings will appear once orders with commissions are placed' : 'ऑर्डर आने पर कैटेगरी अनुसार कमीशन चार्ट यहाँ दिखेगा'}
+                </p>
+              </div>
+            ) : (
+              <HighchartsReact highcharts={Highcharts} options={categoryChartOptions} />
+            )}
           </div>
         </div>
 
