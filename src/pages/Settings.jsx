@@ -13,7 +13,9 @@ import {
   FiGlobe,
   FiLock,
   FiEye,
-  FiEyeOff
+  FiEyeOff,
+  FiBell,
+  FiSend
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { adminPanelApi, adminAuthApi } from '../services/api';
@@ -35,6 +37,45 @@ export default function Settings() {
     newPassword: '',
     confirmPassword: '',
   });
+
+  // Test Push Notification State
+  const [testNotifLoading, setTestNotifLoading] = useState(false);
+  const [testNotif, setTestNotif] = useState({
+    appType: 'vendor', // 'customer' | 'vendor' | 'delivery'
+    phone: '',
+    title: '🔔 Live App Notification Test',
+    body: 'Ye push notification test Admin Panel dwara bheja gaya hai!',
+  });
+
+  const handleSendTestNotification = async (e) => {
+    e.preventDefault();
+    if (!testNotif.phone.trim()) {
+      toast.error(isEnglish ? 'Please enter registered mobile number!' : 'कृपया रजिस्टर्ड मोबाइल नंबर दर्ज करें!');
+      return;
+    }
+    setTestNotifLoading(true);
+    try {
+      const res = await adminPanelApi.sendTestFcm({
+        appType: testNotif.appType,
+        phone: testNotif.phone.trim(),
+        title: testNotif.title.trim(),
+        body: testNotif.body.trim(),
+      });
+      if (res.success) {
+        toast.success(
+          isEnglish 
+            ? `Push notification sent to ${testNotif.appType.toUpperCase()} (${testNotif.phone})!` 
+            : `${testNotif.appType.toUpperCase()} (${testNotif.phone}) पर नोटिफिकेशन सफलतापूर्वक भेजा गया!`
+        );
+      } else {
+        toast.error(res.message || 'Notification sending failed');
+      }
+    } catch (err) {
+      toast.error(err.message || 'Error sending test push notification');
+    } finally {
+      setTestNotifLoading(false);
+    }
+  };
 
   const [formData, setFormData] = useState({
     platformName: 'Contract Bazar',
@@ -177,6 +218,7 @@ export default function Settings() {
           { id: 'commission', label: t('tabCommissionPolicy'), icon: FiPercent },
           { id: 'ops', label: t('tabSecurityOps'), icon: FiShield },
           { id: 'password', label: t('tabSecurityPassword'), icon: FiLock },
+          { id: 'notifications', label: isEnglish ? 'Push Notifications' : 'पुश नोटिफिकेशन टेस्ट', icon: FiBell },
         ].map(tab => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -549,6 +591,118 @@ export default function Settings() {
                 >
                   <FiCheckCircle size={15} />
                   <span>{passwordLoading ? t('changingPassword') : t('btnChangePassword')}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+        {/* TAB 6: PUSH NOTIFICATIONS TESTING FOR ALL 3 APPS */}
+        {activeTab === 'notifications' && (
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3 mb-6 p-4 bg-orange-50 rounded-2xl border border-orange-200 text-orange-900">
+              <FiBell size={24} className="text-primary flex-shrink-0" />
+              <div>
+                <h4 className="font-bold text-sm">
+                  {isEnglish ? 'Live Push Notification Testing Hub' : 'लाइव पुश नोटिफिकेशन टेस्टिंग हब'}
+                </h4>
+                <p className="text-xs text-orange-700 mt-0.5">
+                  {isEnglish
+                    ? 'Send instant live push notifications to Customer App, Vendor App, or Delivery App to verify device delivery.'
+                    : 'Customer, Vendor या Delivery App पर सीधे लाइव नोटिफिकेशन भेजकर चेक करें कि मोबाइल पर नोटिफिकेशन पहुंच रहा है या नहीं।'}
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSendTestNotification} className="space-y-5">
+              {/* Target App Selector */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+                  {isEnglish ? 'Target App' : 'टारगेट मोबाइल ऐप'}
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { id: 'customer', label: isEnglish ? 'Customer App' : 'कस्टमर ऐप', color: 'border-blue-500 text-blue-700 bg-blue-50' },
+                    { id: 'vendor', label: isEnglish ? 'Vendor App' : 'वेंडर ऐप', color: 'border-orange-500 text-orange-700 bg-orange-50' },
+                    { id: 'delivery', label: isEnglish ? 'Delivery App' : 'डिलीवरी ऐप', color: 'border-emerald-500 text-emerald-700 bg-emerald-50' },
+                  ].map(app => {
+                    const isSelected = testNotif.appType === app.id;
+                    return (
+                      <button
+                        key={app.id}
+                        type="button"
+                        onClick={() => setTestNotif(prev => ({ ...prev, appType: app.id }))}
+                        className={`py-3 px-4 rounded-xl text-xs font-bold border-2 transition-all text-center ${
+                          isSelected ? app.color : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                        }`}
+                      >
+                        {app.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Registered Phone */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+                  {isEnglish ? 'Registered 10-Digit Mobile Number *' : 'रजिस्टर्ड मोबाइल नंबर *'}
+                </label>
+                <div className="relative">
+                  <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                  <input
+                    type="text"
+                    maxLength={10}
+                    placeholder="e.g. 7549910055"
+                    value={testNotif.phone}
+                    onChange={(e) => setTestNotif(prev => ({ ...prev, phone: e.target.value }))}
+                    className="w-full bg-slate-50 text-slate-900 text-sm pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:bg-white focus:border-primary focus:outline-none transition-all font-semibold"
+                    required
+                  />
+                </div>
+                <p className="text-[11px] text-slate-400 mt-1">
+                  {isEnglish
+                    ? 'Enter the mobile number that logged into the chosen app.'
+                    : 'जिस नंबर से ऐप में लॉगिन किया गया है, वही 10 अंकों का नंबर डालें।'}
+                </p>
+              </div>
+
+              {/* Notification Title */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+                  {isEnglish ? 'Notification Title' : 'नोटिफिकेशन शीर्षक (Title)'}
+                </label>
+                <input
+                  type="text"
+                  value={testNotif.title}
+                  onChange={(e) => setTestNotif(prev => ({ ...prev, title: e.target.value }))}
+                  className="w-full bg-slate-50 text-slate-900 text-sm px-4 py-3 rounded-xl border border-slate-200 focus:bg-white focus:border-primary focus:outline-none transition-all font-semibold"
+                  required
+                />
+              </div>
+
+              {/* Notification Message */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+                  {isEnglish ? 'Notification Message Body' : 'संदेश विवरण (Message Body)'}
+                </label>
+                <textarea
+                  rows={3}
+                  value={testNotif.body}
+                  onChange={(e) => setTestNotif(prev => ({ ...prev, body: e.target.value }))}
+                  className="w-full bg-slate-50 text-slate-900 text-sm p-4 rounded-xl border border-slate-200 focus:bg-white focus:border-primary focus:outline-none transition-all font-semibold"
+                  required
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="pt-2 flex items-center justify-end">
+                <button
+                  type="submit"
+                  disabled={testNotifLoading}
+                  className="px-6 py-3 bg-gradient-to-r from-primary to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-primary/30 flex items-center gap-2 transition-all disabled:opacity-50"
+                >
+                  <FiSend size={15} />
+                  <span>{testNotifLoading ? (isEnglish ? 'Sending Push...' : 'भेजा जा रहा है...') : (isEnglish ? 'Send Live Notification Now' : 'लाइव पुश नोटिफिकेशन भेजें')}</span>
                 </button>
               </div>
             </form>

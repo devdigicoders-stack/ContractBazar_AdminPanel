@@ -246,4 +246,12 @@ export const adminPanelApi = {
       method: 'DELETE',
     });
   },
+
+  // Test FCM Push Notification to Customer / Vendor / Delivery apps
+  sendTestFcm: async ({ appType, phone, token, title, body }) => {
+    return await apiRequest('/test/fcm', {
+      method: 'POST',
+      body: JSON.stringify({ appType, phone, token, title, body }),
+    });
+  },
 };
